@@ -57,6 +57,7 @@ class AccessibilityTools extends StatefulWidget {
     this.enableButtonsDrag = false,
     this.testingToolsConfiguration = const TestingToolsConfiguration(),
     this.testEnvironment = const TestEnvironment(),
+    this.isSemanticsPanelEnabled = true,
   });
 
   /// Forces accessibility checkers to run when running from a test.
@@ -86,6 +87,7 @@ class AccessibilityTools extends StatefulWidget {
 
   final ButtonsAlignment buttonsAlignment;
   final bool enableButtonsDrag;
+  final bool isSemanticsPanelEnabled;
   final TestingToolsConfiguration testingToolsConfiguration;
   final TestEnvironment testEnvironment;
 
@@ -194,6 +196,7 @@ class _AccessibilityToolsState extends State<AccessibilityTools>
                   checker: _checker,
                   buttonsAlignment: widget.buttonsAlignment,
                   enableButtonsDrag: widget.enableButtonsDrag,
+                  isSemanticsPanelEnabled: widget.isSemanticsPanelEnabled,
                   isTestingPanelEnabled:
                       widget.testingToolsConfiguration.enabled,
                   onToolsButtonPressed: () {
@@ -203,6 +206,14 @@ class _AccessibilityToolsState extends State<AccessibilityTools>
                   },
                   onHideTestingTools: () {
                     setState(() => _testingToolsVisible = false);
+                  },
+                  onToolsSemanticButtonPressed: () {
+                    setState(() {
+                      _environment = TestEnvironment(
+                        semanticsDebuggerEnabled:
+                            !(_environment.semanticsDebuggerEnabled ?? false),
+                      );
+                    });
                   },
                 );
 
@@ -247,18 +258,22 @@ class CheckerOverlay extends StatefulWidget {
     super.key,
     required this.checker,
     required this.onToolsButtonPressed,
+    required this.onToolsSemanticButtonPressed,
     required this.onHideTestingTools,
     required this.isTestingPanelEnabled,
+    required this.isSemanticsPanelEnabled,
     this.buttonsAlignment = ButtonsAlignment.bottomRight,
     this.enableButtonsDrag = false,
   });
 
   final CheckerManager checker;
   final VoidCallback onToolsButtonPressed;
+  final VoidCallback onToolsSemanticButtonPressed;
   final VoidCallback onHideTestingTools;
   final ButtonsAlignment buttonsAlignment;
   final bool enableButtonsDrag;
   final bool isTestingPanelEnabled;
+  final bool isSemanticsPanelEnabled;
 
   @override
   State<CheckerOverlay> createState() => _CheckerOverlayState();
@@ -315,6 +330,7 @@ class _CheckerOverlayState extends State<CheckerOverlay> {
               child: _WarningButton(
                 issues: issues,
                 isTestingPanelEnabled: widget.isTestingPanelEnabled,
+                isSemanticsPanelEnabled: widget.isSemanticsPanelEnabled,
                 onPressed: () {
                   setState(() {
                     showOverlays = !showOverlays;
@@ -328,6 +344,8 @@ class _CheckerOverlayState extends State<CheckerOverlay> {
                     widget.onToolsButtonPressed();
                   });
                 },
+                onToolsSemanticsButtonPressed:
+                    widget.onToolsSemanticButtonPressed,
               ),
             ),
           ],
@@ -465,13 +483,17 @@ class _WarningButton extends StatelessWidget {
     required this.onToolsButtonPressed,
     required this.toggled,
     required this.isTestingPanelEnabled,
+    required this.isSemanticsPanelEnabled,
+    required this.onToolsSemanticsButtonPressed,
   });
 
   final bool toggled;
   final bool isTestingPanelEnabled;
+  final bool isSemanticsPanelEnabled;
   final List<AccessibilityIssue> issues;
   final VoidCallback onPressed;
   final VoidCallback onToolsButtonPressed;
+  final VoidCallback onToolsSemanticsButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -487,6 +509,12 @@ class _WarningButton extends StatelessWidget {
         if (isTestingPanelEnabled) ...[
           const SizedBox(height: 12),
           AccessibilityToolsToggle(onToolsButtonPressed: onToolsButtonPressed),
+        ],
+        if (isSemanticsPanelEnabled) ...[
+          const SizedBox(height: 12),
+          AccessibilitySemanticsToggle(
+            onToolsButtonPressed: onToolsSemanticsButtonPressed,
+          ),
         ],
       ],
     );
