@@ -562,19 +562,19 @@ class WarningBoxPainter extends CustomPainter {
 
   final double borderWidth;
 
-  static const Color _black = Color(0xBF000000);
-  static const Color _yellow = Color(0xBFFFFF00);
+  static const Color _blue = Color(0xFF0057B7);
+  static const Color _yellow = Color(0xFFFFD700);
 
   static final Paint _indicatorPaint = Paint()
     ..style = PaintingStyle.stroke
     ..shader = ui.Gradient.linear(
       Offset.zero,
-      const Offset(10.0, 10.0),
-      <Color>[_black, _yellow, _yellow, _black],
+      const Offset(8.0, 8.0),
+      <Color>[_blue, _yellow, _yellow, _blue],
       <double>[0.25, 0.25, 0.75, 0.75],
       TileMode.repeated,
     )
-    ..strokeWidth = 5.0;
+    ..strokeWidth = 4.0;
 
   @override
   void paint(Canvas canvas, Size size) {

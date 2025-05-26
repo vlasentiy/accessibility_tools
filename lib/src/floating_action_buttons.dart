@@ -47,7 +47,7 @@ class AccessibilityIssuesToggle extends StatelessWidget {
           onPressed: onPressed,
           backgroundColor: backgroundColor,
           child: Icon(
-            Icons.accessibility_new,
+            toggled ? Icons.border_all : Icons.border_clear,
             size: 24,
             color: foregroundColor,
             semanticLabel: semanticLabel,
@@ -118,7 +118,8 @@ class _AccessibilitySemanticsToggleState
   @override
   Widget build(BuildContext context) {
     const label = 'Enable semantics reader mode';
-    final Color foregroundColor = toggled ? Colors.yellow : Colors.white;
+    final Color foregroundColor =
+        toggled ? const Color(0xffa5cf24) : Colors.white;
 
     return SizedBox.square(
       dimension: toolsBoxMinSize,
@@ -134,7 +135,7 @@ class _AccessibilitySemanticsToggleState
           hoverElevation: _elevation,
           backgroundColor: const Color(0xff4ea524),
           child: Icon(
-            Icons.blind,
+            toggled ? Icons.visibility_off : Icons.visibility,
             size: 24,
             color: foregroundColor,
             semanticLabel: label,
