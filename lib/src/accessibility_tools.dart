@@ -508,13 +508,14 @@ class _WarningButton extends StatelessWidget {
           ),
         if (isTestingPanelEnabled) ...[
           const SizedBox(height: 12),
-          AccessibilityToolsToggle(onToolsButtonPressed: onToolsButtonPressed),
+          AccessibilityToolsToggle(
+            onToolsButtonPressed: onToolsButtonPressed,
+          ),
         ],
         if (isSemanticsPanelEnabled) ...[
           const SizedBox(height: 12),
           AccessibilitySemanticsToggle(
-            onToolsButtonPressed: onToolsSemanticsButtonPressed,
-          ),
+              onToolsButtonPressed: onToolsSemanticsButtonPressed),
         ],
       ],
     );

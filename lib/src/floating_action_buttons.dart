@@ -31,8 +31,8 @@ class AccessibilityIssuesToggle extends StatelessWidget {
     }
 
     final double elevation = toggled ? 0 : _elevation;
-    final Color backgroundColor = toggled ? Colors.orange : Colors.red;
-    final Color foregroundColor = toggled ? Colors.white : Colors.yellow;
+    const Color backgroundColor = Color(0xff0074E7);
+    final Color foregroundColor = toggled ? Colors.yellow : Colors.white;
     final String semanticLabel =
         toggled ? 'Hide accessibility issues\n' : 'Show accessibility issues\n';
 
@@ -92,7 +92,7 @@ class AccessibilityToolsToggle extends StatelessWidget {
   }
 }
 
-class AccessibilitySemanticsToggle extends StatelessWidget {
+class AccessibilitySemanticsToggle extends StatefulWidget {
   const AccessibilitySemanticsToggle({
     super.key,
     required this.onToolsButtonPressed,
@@ -101,23 +101,42 @@ class AccessibilitySemanticsToggle extends StatelessWidget {
   final VoidCallback onToolsButtonPressed;
 
   @override
+  State<AccessibilitySemanticsToggle> createState() =>
+      _AccessibilitySemanticsToggleState();
+}
+
+class _AccessibilitySemanticsToggleState
+    extends State<AccessibilitySemanticsToggle> {
+  bool toggled = false;
+
+  void _toggle() {
+    setState(() {
+      toggled = !toggled;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    const label = 'Enable semanctics reader mode';
+    const label = 'Enable semantics reader mode';
+    final Color foregroundColor = toggled ? Colors.yellow : Colors.white;
 
     return SizedBox.square(
       dimension: toolsBoxMinSize,
       child: Tooltip(
         message: label,
         child: FloatingActionButton(
-          onPressed: onToolsButtonPressed,
+          onPressed: () {
+            _toggle();
+            widget.onToolsButtonPressed();
+          },
           shape: const CircleBorder(),
           elevation: _elevation,
           hoverElevation: _elevation,
-          backgroundColor: Colors.purple,
-          child: const Icon(
+          backgroundColor: const Color(0xff4ea524),
+          child: Icon(
             Icons.blind,
             size: 24,
-            color: Colors.white,
+            color: foregroundColor,
             semanticLabel: label,
           ),
         ),
